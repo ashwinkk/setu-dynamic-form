@@ -1,0 +1,85 @@
+import { useMemo, useState, useCallback } from "react";
+import { TFormContainerProps, TFormFieldProps } from "./type";
+
+const FormContainer = ({ config }: TFormContainerProps) => {
+  const [formValues, setFormValue] = useState({});
+
+  const handleFieldChange = useCallback(
+    (fieldName: string, value: string) => {
+      const updatedFormValue = {
+        ...formValues,
+        [fieldName]: value,
+      };
+      console.log(updatedFormValue);
+
+      setFormValue(updatedFormValue);
+    },
+    [formValues],
+  );
+
+  return (
+    <form id={config.id}>
+      {config.fields.map((fieldProps) => {
+        if (fieldProps.hideField?.(formValues)) return null;
+
+        return (
+          <FormField
+            key={fieldProps.id}
+            fieldProps={fieldProps}
+            onChange={handleFieldChange}
+            formValues={formValues}
+          />
+        );
+      })}
+    </form>
+  );
+};
+
+const FormField = ({ fieldProps, onChange, formValues }: TFormFieldProps) => {
+  const handleOnChange: React.ChangeEventHandler<
+    HTMLInputElement | HTMLSelectElement
+  > = useCallback(
+    (event) => {
+      onChange?.(fieldProps.fieldName, event?.target?.value);
+    },
+    [fieldProps.fieldName, onChange],
+  );
+
+  const Field = useMemo(() => {
+    switch (fieldProps.type) {
+      case "text":
+      case "number":
+        return (
+          <input
+            type={fieldProps.type}
+            name={fieldProps.fieldName}
+            defaultValue={fieldProps.defaultValue}
+            onChange={handleOnChange}
+          />
+        );
+      case "dropdown":
+        return (
+          <select name={fieldProps.fieldName} onChange={handleOnChange}>
+            {fieldProps.options?.map((option) => {
+              return (
+                <option key={option.id} value={option.value}>
+                  {option.label}
+                </option>
+              );
+            })}
+          </select>
+        );
+      default:
+        return null;
+    }
+  }, [fieldProps, handleOnChange]);
+
+  return (
+    <>
+      <span>{fieldProps.label}</span>
+      {Field}
+    </>
+  );
+};
+
+export default FormContainer;
