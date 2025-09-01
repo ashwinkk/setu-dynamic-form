@@ -2,7 +2,7 @@ import { useMemo, useState, useCallback } from "react";
 import { TFormContainerProps, TFormFieldProps } from "./type";
 import { getDefaultValues } from "./utils";
 
-const FormContainer = ({ config }: TFormContainerProps) => {
+const FormContainer = ({ config, onSubmit }: TFormContainerProps) => {
   const [formValues, setFormValue] = useState(getDefaultValues(config.fields));
 
   const handleFieldChange = useCallback(
@@ -18,8 +18,16 @@ const FormContainer = ({ config }: TFormContainerProps) => {
     [formValues],
   );
 
+  const handleOnSubmit: React.FormEventHandler<HTMLFormElement> = useCallback(
+    (e) => {
+      e.preventDefault();
+      onSubmit?.(formValues);
+    },
+    [formValues],
+  );
+
   return (
-    <form id={config.id}>
+    <form id={config.id} name={config.formName} onSubmit={handleOnSubmit}>
       {config.fields.map((fieldProps) => {
         if (fieldProps.hideField?.(formValues)) return null;
 

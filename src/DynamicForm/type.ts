@@ -22,6 +22,7 @@ export type TFormConfig = {
 
 export type TFormContainerProps = {
   config: TFormConfig;
+  onSubmit: (data: Record<string, string>) => void;
 };
 
 export type TFormFieldProps = {
