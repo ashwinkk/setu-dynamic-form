@@ -62,7 +62,9 @@ const FormField = ({ fieldProps, onChange, formValues }: TFormFieldProps) => {
           <input
             type={fieldProps.type}
             name={fieldProps.fieldName}
-            defaultValue={fieldProps.defaultValue}
+            defaultValue={
+              formValues?.[fieldProps.fieldName] ?? fieldProps.defaultValue
+            }
             onChange={handleOnChange}
           />
         );
@@ -71,7 +73,9 @@ const FormField = ({ fieldProps, onChange, formValues }: TFormFieldProps) => {
           <select
             name={fieldProps.fieldName}
             onChange={handleOnChange}
-            value={fieldProps.defaultValue}
+            value={
+              formValues?.[fieldProps.fieldName] ?? fieldProps.defaultValue
+            }
           >
             <option key="no-value">--</option>
             {fieldProps.options?.map((option) => {
