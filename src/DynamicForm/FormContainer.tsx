@@ -1,8 +1,9 @@
 import { useMemo, useState, useCallback } from "react";
 import { TFormContainerProps, TFormFieldProps } from "./type";
+import { getDefaultValues } from "./utils";
 
 const FormContainer = ({ config }: TFormContainerProps) => {
-  const [formValues, setFormValue] = useState({});
+  const [formValues, setFormValue] = useState(getDefaultValues(config.fields));
 
   const handleFieldChange = useCallback(
     (fieldName: string, value: string) => {
@@ -59,7 +60,12 @@ const FormField = ({ fieldProps, onChange, formValues }: TFormFieldProps) => {
         );
       case "dropdown":
         return (
-          <select name={fieldProps.fieldName} onChange={handleOnChange}>
+          <select
+            name={fieldProps.fieldName}
+            onChange={handleOnChange}
+            value={fieldProps.defaultValue}
+          >
+            <option key="no-value">--</option>
             {fieldProps.options?.map((option) => {
               return (
                 <option key={option.id} value={option.value}>

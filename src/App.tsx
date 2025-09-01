@@ -18,7 +18,7 @@ export function App() {
         fieldName: "country",
         label: "Country",
         type: "dropdown",
-        defaultValue: "",
+        defaultValue: "india",
         options: [
           {
             id: "india",
