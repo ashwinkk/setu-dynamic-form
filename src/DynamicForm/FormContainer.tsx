@@ -11,7 +11,6 @@ const FormContainer = ({ config, onSubmit }: TFormContainerProps) => {
         ...formValues,
         [fieldName]: value,
       };
-      console.log(updatedFormValue);
 
       setFormValue(updatedFormValue);
     },
@@ -40,6 +39,7 @@ const FormContainer = ({ config, onSubmit }: TFormContainerProps) => {
           />
         );
       })}
+      <button type="submit">Submit</button>
     </form>
   );
 };

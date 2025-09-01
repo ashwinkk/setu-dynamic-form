@@ -1,3 +1,4 @@
+import { useCallback } from "react";
 import FormContainer from "./DynamicForm";
 import { TFormConfig } from "./DynamicForm/type";
 
@@ -49,5 +50,9 @@ export function App() {
     ],
   };
 
-  return <FormContainer config={formConfig} />;
+  const onSubmit = useCallback((values) => {
+    console.log(values);
+  }, []);
+
+  return <FormContainer config={formConfig} onSubmit={onSubmit} />;
 }
